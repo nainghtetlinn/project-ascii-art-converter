@@ -6,9 +6,160 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ASCII Art Convertor</title>
     <link rel="stylesheet" href="./src/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
   </head>
   <body>
-    <button class="btn btn-primary m-4">Start</button>
+    <nav class="navbar mb-4 bg-base-100 flex justify-center">
+      <h4 class="normal-case text-2xl font-bold text-primary">
+        ASCII Art Convertor
+      </h4>
+    </nav>
+
+    <main class="container mx-auto">
+      <section>
+        <div
+          id="emptyImage"
+          class="w-[300px] h-[300px] mx-auto text-primary text-xl border-4 border-dashed border-primary rounded-lg flex flex-col justify-center items-center"
+        >
+          <i class="fa-regular fa-image text-8xl"></i>
+          <span>Choose Image</span>
+        </div>
+
+        <div
+          id="canvasContainer"
+          class="mx-auto w-full max-w-lg hidden items-center justify-center p-4 rounded-lg border-4 border-dashed border-primary"
+        >
+          <canvas id="canvas"></canvas>
+        </div>
+      </section>
+
+      <section>
+        <form
+          id="form"
+          action=""
+          class="max-w-lg bg-base-200 mx-auto mt-6 sm:rounded-lg flex flex-col gap-4"
+        >
+          <div class="p-4 flex items-center justify-evenly">
+            <label for="image" class="btn btn-secondary btn-sm lg:btn-md">
+              <i class="fa-solid fa-upload text-xl"></i> Upload
+            </label>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              class="hidden"
+              accept="image/*"
+            />
+
+            <button
+              type="submit"
+              id="convertBtn"
+              disabled
+              class="btn btn-accent btn-sm lg:btn-md"
+            >
+              <i class="fa-solid fa-check text-xl"></i> Convert
+            </button>
+
+            <button
+              id="downloadBtn"
+              disabled
+              class="btn btn-primary btn-sm lg:btn-md"
+            >
+              <i class="fa-solid fa-download text-xl"></i> Download
+            </button>
+          </div>
+          <table class="table">
+            <tr>
+              <td><label for="density">Characters: </label></td>
+              <td>
+                <input
+                  type="text"
+                  name="density"
+                  id="density"
+                  required
+                  minlength="6"
+                  value="aaaaaa"
+                  class="input input-primary w-full max-w-xs"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td><label for="resolution">Resolution: </label></td>
+              <td>
+                <input
+                  type="range"
+                  name="resolution"
+                  id="resolution"
+                  min="5"
+                  max="20"
+                  step="1"
+                  value="5"
+                  class="range range-primary w-full"
+                />
+                <div class="w-full flex justify-between text-xs px-2">
+                  <span>5</span>
+                  <span>|</span>
+                  <span>10</span>
+                  <span>|</span>
+                  <span>15</span>
+                  <span>|</span>
+                  <span>20</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="wordCount">Word count: </label></td>
+              <td>
+                <input
+                  type="range"
+                  name="wordCount"
+                  id="wordCount"
+                  min="0"
+                  max="10"
+                  step="1"
+                  value="0"
+                  class="range range-primary w-full"
+                />
+                <div class="w-full flex justify-between text-xs px-2">
+                  <span>0</span>
+                  <span>|</span>
+                  <span>5</span>
+                  <span>|</span>
+                  <span>10</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="keepColor">Keep color: </label></td>
+              <td>
+                <input
+                  type="checkbox"
+                  name="keepColor"
+                  id="keepColor"
+                  checked
+                  class="checkbox checkbox-primary"
+                />
+              </td>
+            </tr>
+            <tr>
+              <td><label for="bgColor">Background color: </label></td>
+              <td>
+                <input
+                  type="color"
+                  name="bgColor"
+                  id="bgColor"
+                  value="#000000"
+                  class="cursor-pointer"
+                />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </section>
+    </main>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
