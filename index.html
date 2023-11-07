@@ -158,6 +158,38 @@
         </form>
       </section>
     </main>
+
+    <footer
+      class="footer footer-center gap-4 p-10 mt-8 bg-primary text-primary-content"
+    >
+      <nav class="grid grid-flow-col gap-4 text-3xl">
+        <a class="link link-hover" href="https://github.com/nainghtetlinn"
+          ><i class="fa-brands fa-github"></i
+        ></a>
+        <a class="link link-hover" href="https://twitter.com/Naing_95"
+          ><i class="fa-brands fa-twitter"></i
+        ></a>
+        <a
+          class="link link-hover"
+          href="https://www.linkedin.com/in/nainghtetlinn95"
+          ><i class="fa-brands fa-linkedin"></i
+        ></a>
+        <a
+          class="link link-hover"
+          href="https://www.facebook.com/nainghtetlinn95"
+          ><i class="fa-brands fa-facebook"></i
+        ></a>
+      </nav>
+
+      <p class="flex text-xl">
+        &copy; <span id="year"></span> | All rights reserved by Naing Htet Linn.
+      </p>
+    </footer>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      const yearEl = document.getElementById("year")
+      const yr = new Date().getFullYear()
+      yearEl.innerHTML = yr
+    </script>
   </body>
 </html>
