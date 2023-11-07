@@ -71,7 +71,8 @@ imageEl.addEventListener("change", () => {
   reader.readAsDataURL(f as any)
 })
 
-downloadBtnEl.addEventListener("click", () => {
+downloadBtnEl.addEventListener("click", e => {
+  e.preventDefault()
   const dataURL = canvasEl.toDataURL("image/png")
   const downloadLink = document.createElement("a")
   downloadLink.href = dataURL
