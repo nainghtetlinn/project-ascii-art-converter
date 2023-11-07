@@ -58,7 +58,9 @@
               disabled
               class="btn btn-accent"
             >
-              <i class="fa-solid fa-check text-xl"></i> Convert
+              <span id="icon"><i class="fa-solid fa-check text-xl"></i></span>
+              <span id="loading" class="hidden loading loading-spinner"></span>
+              Convert
             </button>
 
             <button
@@ -92,7 +94,7 @@
                   name="resolution"
                   id="resolution"
                   min="5"
-                  max="20"
+                  max="35"
                   step="1"
                   value="5"
                   class="range range-primary w-full"
@@ -100,11 +102,11 @@
                 <div class="w-full flex justify-between text-xs px-2">
                   <span>5</span>
                   <span>|</span>
-                  <span>10</span>
-                  <span>|</span>
                   <span>15</span>
                   <span>|</span>
-                  <span>20</span>
+                  <span>25</span>
+                  <span>|</span>
+                  <span>35</span>
                 </div>
               </td>
             </tr>
@@ -160,7 +162,7 @@
     </main>
 
     <footer
-      class="footer footer-center gap-4 p-10 mt-8 bg-primary text-primary-content"
+      class="footer footer-center gap-4 px-4 py-10 mt-8 bg-primary text-primary-content"
     >
       <nav class="grid grid-flow-col gap-4 text-3xl">
         <a class="link link-hover" href="https://github.com/nainghtetlinn"
@@ -181,7 +183,7 @@
         ></a>
       </nav>
 
-      <p class="flex text-xl">
+      <p class="flex md:text-xl">
         &copy; <span id="year"></span> | All rights reserved by Naing Htet Linn.
       </p>
     </footer>

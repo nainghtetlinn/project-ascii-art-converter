@@ -1,7 +1,8 @@
 import { AsciiEffect, IOptions } from "./library"
 
 const formEl = document.getElementById("form") as HTMLFormElement
-
+const iconEl = document.getElementById("icon") as HTMLSpanElement
+const loadingEl = document.getElementById("loading") as HTMLSpanElement
 const convertBtnEl = document.getElementById("convertBtn") as HTMLButtonElement
 const downloadBtnEl = document.getElementById(
   "downloadBtn"
@@ -19,9 +20,15 @@ const ctx = canvasEl.getContext("2d") as CanvasRenderingContext2D
 let effect: AsciiEffect | null = null
 
 let selectedImage: any
+let loading = false
 
 formEl.addEventListener("submit", (e: Event | any) => {
   e.preventDefault()
+  if (loading || !(effect && selectedImage)) return
+
+  downloadBtnEl.disabled = true
+  loading = true
+  updateIcon()
 
   const data: IOptions = {
     density: e.target.density.value as string,
@@ -30,15 +37,20 @@ formEl.addEventListener("submit", (e: Event | any) => {
     keepOriginalColor: e.target.keepColor.checked,
     bgColor: e.target.bgColor.value,
   }
-  if (effect && selectedImage) {
-    const imgData = effect.draw(selectedImage, data)
+
+  let imgData = effect.draw(selectedImage, data)
+
+  setTimeout(() => {
     const img = new Image()
     img.src = canvasEl.toDataURL("image/png")
     img.width = imgData.width
     img.height = imgData.height
     updateImg(img)
+
     downloadBtnEl.disabled = false
-  }
+    loading = false
+    updateIcon()
+  }, 1000)
 })
 
 imageEl.addEventListener("change", () => {
@@ -66,6 +78,16 @@ downloadBtnEl.addEventListener("click", () => {
   downloadLink.download = `ascii${new Date().getTime()}.png`
   downloadLink.click()
 })
+
+function updateIcon() {
+  if (loading) {
+    loadingEl.classList.remove("hidden")
+    iconEl.classList.add("hidden")
+  } else {
+    loadingEl.classList.add("hidden")
+    iconEl.classList.remove("hidden")
+  }
+}
 
 function updateImg(img: HTMLImageElement) {
   const { width, height } = getWidthAndHeight(img.width, img.height)
