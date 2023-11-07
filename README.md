@@ -1,10 +1,10 @@
-# ASCII Art Convertor
+# ASCII Art Converter
 
 Image > converts > ASCII Art
 
 ## Demo
 
-https://ascii-art-convertor.netlify.app/
+https://asciiart-converter.netlify.app/
 
 ## Tech Stack
 
