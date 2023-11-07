@@ -100,7 +100,7 @@ export class AsciiEffect {
     }
   }
 
-  draw(el: HTMLImageElement, options?: IOptions) {
+  draw(el: HTMLImageElement, options?: IOptions): ImageData {
     this.#options = { ...defaultOptions, ...options }
     this.#imageCellArray = []
     this.#pixels = null
@@ -120,6 +120,7 @@ export class AsciiEffect {
     for (let i = 0; i < this.#imageCellArray.length; i++) {
       this.#imageCellArray[i].draw(this.#ctx)
     }
+    return this.#ctx.getImageData(0, 0, this.#width, this.#height)
   }
 }
 

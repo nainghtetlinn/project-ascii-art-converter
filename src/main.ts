@@ -9,16 +9,15 @@ const downloadBtnEl = document.getElementById(
 
 const emptyImageEl = document.getElementById("emptyImage") as HTMLDivElement
 const imageEl = document.getElementById("image") as HTMLInputElement
-
 const canvasContainerEl = document.getElementById(
   "canvasContainer"
 ) as HTMLDivElement
-const canvasEl = document.getElementById("canvas") as HTMLCanvasElement
+
+const canvasEl = document.createElement("canvas") as HTMLCanvasElement
 const ctx = canvasEl.getContext("2d") as CanvasRenderingContext2D
 
 let effect: AsciiEffect | null = null
-const maxWidth = 300
-const maxHeight = 400
+
 let selectedImage: any
 
 formEl.addEventListener("submit", (e: Event | any) => {
@@ -32,7 +31,12 @@ formEl.addEventListener("submit", (e: Event | any) => {
     bgColor: e.target.bgColor.value,
   }
   if (effect && selectedImage) {
-    effect.draw(selectedImage, data)
+    const imgData = effect.draw(selectedImage, data)
+    const img = new Image()
+    img.src = canvasEl.toDataURL("image/png")
+    img.width = imgData.width
+    img.height = imgData.height
+    updateImg(img)
     downloadBtnEl.disabled = false
   }
 })
@@ -45,23 +49,11 @@ imageEl.addEventListener("change", () => {
     img.src = event.target!.result as string
     img.onload = function () {
       selectedImage = img
-      emptyImageEl.classList.add("hidden")
-      canvasContainerEl.classList.remove("hidden")
-      canvasContainerEl.classList.add("flex")
-
-      const { width, height } = getWidthAndHeight(
-        img.width,
-        img.height,
-        maxWidth,
-        maxHeight
-      )
-
-      canvasEl.width = width
-      canvasEl.height = height
-      ctx.clearRect(0, 0, width, height)
-      ctx.drawImage(selectedImage, 0, 0, width, height)
-      effect = new AsciiEffect(ctx, width, height)
+      canvasEl.width = img.width
+      canvasEl.height = img.height
       convertBtnEl.disabled = false
+      effect = new AsciiEffect(ctx, img.width, img.height)
+      updateImg(img)
     }
   }
   reader.readAsDataURL(f as any)
@@ -75,26 +67,25 @@ downloadBtnEl.addEventListener("click", () => {
   downloadLink.click()
 })
 
-function getWidthAndHeight(
-  imgW: number,
-  imgH: number,
-  maxW: number,
-  maxH: number
-) {
-  let widthScale = 1
-  let heightScale = 1
+function updateImg(img: HTMLImageElement) {
+  const { width, height } = getWidthAndHeight(img.width, img.height)
+  img.style.objectFit = "contain"
+  img.width = width
+  img.height = height
+  emptyImageEl.classList.add("hidden")
+  canvasContainerEl.classList.remove("hidden")
+  canvasContainerEl.classList.add("flex")
+  canvasContainerEl.innerHTML = ""
+  canvasContainerEl.appendChild(img)
+}
 
-  if (imgW > maxW) {
-    widthScale = maxW / imgW
-  }
-  if (imgH > maxH) {
-    heightScale = maxH / imgH
-  }
+function getWidthAndHeight(imgW: number, imgH: number) {
+  const maxHeight = 400
+  const aspectRatio = imgW / imgH
+  const newWidth = maxHeight * aspectRatio
 
-  const scale = Math.min(widthScale, heightScale)
-
-  const width = imgW * scale
-  const height = imgH * scale
+  const width = newWidth
+  const height = maxHeight
 
   return { width, height }
 }

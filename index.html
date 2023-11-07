@@ -22,7 +22,7 @@
       <section>
         <div
           id="emptyImage"
-          class="w-[300px] h-[300px] mx-auto text-primary text-xl border-4 border-dashed border-primary rounded-lg flex flex-col justify-center items-center"
+          class="w-full max-w-lg h-[300px] mx-auto text-primary text-xl border-4 border-dashed border-primary rounded-lg flex flex-col justify-center items-center"
         >
           <i class="fa-regular fa-image text-8xl"></i>
           <span>Choose Image</span>
@@ -30,10 +30,8 @@
 
         <div
           id="canvasContainer"
-          class="mx-auto w-full max-w-lg hidden items-center justify-center p-4 rounded-lg border-4 border-dashed border-primary"
-        >
-          <canvas id="canvas"></canvas>
-        </div>
+          class="mx-auto w-full max-w-lg hidden items-center justify-center rounded-lg border-4 border-dashed border-primary"
+        ></div>
       </section>
 
       <section>
@@ -43,8 +41,8 @@
           class="max-w-lg bg-base-200 mx-auto mt-6 sm:rounded-lg flex flex-col gap-4"
         >
           <div class="p-4 flex items-center justify-evenly">
-            <label for="image" class="btn btn-secondary btn-sm lg:btn-md">
-              <i class="fa-solid fa-upload text-xl"></i> Upload
+            <label for="image" class="btn btn-square btn-secondary">
+              <i class="fa-solid fa-upload text-xl"></i>
             </label>
             <input
               type="file"
@@ -58,7 +56,7 @@
               type="submit"
               id="convertBtn"
               disabled
-              class="btn btn-accent btn-sm lg:btn-md"
+              class="btn btn-accent"
             >
               <i class="fa-solid fa-check text-xl"></i> Convert
             </button>
@@ -66,9 +64,9 @@
             <button
               id="downloadBtn"
               disabled
-              class="btn btn-primary btn-sm lg:btn-md"
+              class="btn btn-square btn-primary"
             >
-              <i class="fa-solid fa-download text-xl"></i> Download
+              <i class="fa-solid fa-download text-xl"></i>
             </button>
           </div>
           <table class="table">
@@ -120,7 +118,7 @@
                   min="0"
                   max="10"
                   step="1"
-                  value="0"
+                  value="10"
                   class="range range-primary w-full"
                 />
                 <div class="w-full flex justify-between text-xs px-2">
