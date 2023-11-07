@@ -51,7 +51,7 @@ export class AsciiEffect {
       ? this.#options.density
       : defaultOptions.density!
 
-    const len = density.length
+    const len = density.length - 1
     if (num >= 0 && num <= 255 && len > 0) {
       const scaledNumber = Math.floor((num / 255) * len)
       return density.charAt(scaledNumber)
