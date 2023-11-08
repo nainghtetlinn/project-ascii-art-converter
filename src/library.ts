@@ -91,7 +91,7 @@ export class AsciiEffect {
 
           const wc = mapNumber(wordCount, 0, 250)
 
-          if (total > wc)
+          if (total >= wc)
             this.#imageCellArray.push(new Cell(x, y, symbol, color))
         }
       }
