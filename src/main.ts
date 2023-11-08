@@ -40,26 +40,26 @@ formEl.addEventListener("submit", (e: Event | any) => {
 
   let imgData = effect.draw(selectedImage, data)
 
-  setTimeout(() => {
-    const img = new Image()
-    img.src = canvasEl.toDataURL("image/png")
-    img.width = imgData.width
-    img.height = imgData.height
-    updateImg(img)
+  const img = new Image()
+  img.src = canvasEl.toDataURL("image/png")
+  img.width = imgData.width
+  img.height = imgData.height
+  updateImg(img)
 
-    downloadBtnEl.disabled = false
-    loading = false
-    updateIcon()
-  }, 1000)
+  downloadBtnEl.disabled = false
+  loading = false
+  updateIcon()
 })
 
 imageEl.addEventListener("change", () => {
   const f = imageEl.files ? imageEl.files[0] : null
   const reader = new FileReader()
-  reader.onload = function (event: ProgressEvent<FileReader>) {
+  reader.onload = function(event: ProgressEvent<FileReader>) {
     const img = new Image()
     img.src = event.target!.result as string
-    img.onload = function () {
+
+    /* TODO: we need to add the event handler BEFORE we try to trigger it */
+    img.onload = function() {
       selectedImage = img
       canvasEl.width = img.width
       canvasEl.height = img.height
@@ -112,3 +112,47 @@ function getWidthAndHeight(imgW: number, imgH: number) {
 
   return { width, height }
 }
+
+// live update
+// extracted parts of form submit handler
+// TODO: remove unneeded parts
+const run = () => {
+  if (loading || !(effect && selectedImage)) return
+
+  const data: IOptions = {
+    density: formEl.density.value as string,
+    cellSize: +formEl.resolution.value,
+    wordCount: 10 - formEl.wordCount.value,
+    keepOriginalColor: formEl.keepColor.checked,
+    bgColor: formEl.bgColor.value,
+  }
+
+  let imgData = effect.draw(selectedImage, data)
+
+  // TODO: do we need to create new image every time
+  const img = new Image()
+
+  // TODO: converting image data to DataURL seems slow (unnecessary encoding / decoding)
+  img.src = canvasEl.toDataURL("image/png")
+  img.width = imgData.width
+  img.height = imgData.height
+  updateImg(img)
+
+  downloadBtnEl.disabled = false
+  loading = false
+  updateIcon()
+}
+
+let high_perf = true
+
+if (high_perf) {
+  document.getElementById('wordCount')?.addEventListener('input', run)
+  document.getElementById('resolution')?.addEventListener('input', run)
+} else {
+  document.getElementById('wordCount')?.addEventListener('change', run)
+  document.getElementById('resolution')?.addEventListener('change', run)
+}
+document.getElementById('density')?.addEventListener('change', run)
+document.getElementById('keepColor')?.addEventListener('change', run)
+document.getElementById('bgColor')?.addEventListener('change', run)
+

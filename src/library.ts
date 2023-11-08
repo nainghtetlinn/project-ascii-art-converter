@@ -79,7 +79,7 @@ export class AsciiEffect {
           const blue = this.#pixels.data[pos + 2]
 
           const total = red + green + blue
-          const avg = total / 3
+          const avg = total / 3 // see optimization #1, we can put this line inside the else block
 
           let color
           if (this.#options.keepOriginalColor) {
@@ -87,12 +87,24 @@ export class AsciiEffect {
           } else {
             color = `rgb(${avg}, ${avg}, ${avg})`
           }
-          const symbol = this.#convertToSymbol(avg)
 
-          const wc = mapNumber(wordCount, 0, 250)
+          // optimization #1
+          // we can replace convertToSymbol with the following:
+          // notice we use 256 and not 255, since we don't want to access index out of range
+          // const symbol = this.#convertToSymbol(avg)
+          const symbol = this.#options.density[Math.floor((avg / 256) * this.#options.density.length)]
 
-          if (total >= wc)
+          // we can skip calculating the avg if we use total instead, like this
+          // const symbol = this.#options.density[Math.floor((total / 768) * this.#options.density.length)]
+
+          // note, not sure what wordCount is for.. and I don't know why we are mapping from 0 to 250
+          // so I've mapped it from 0 to maximum possible number of total (255*3)
+          // possibly we can use 256 * 3 if the next logic is changed
+          const wc = mapNumber(wordCount, 0, 255 * 3)
+
+          if (total >= wc) {
             this.#imageCellArray.push(new Cell(x, y, symbol, color))
+          }
         }
       }
     } else {
@@ -120,6 +132,14 @@ export class AsciiEffect {
     for (let i = 0; i < this.#imageCellArray.length; i++) {
       this.#imageCellArray[i].draw(this.#ctx)
     }
+
+    // we got warning in browser:
+    //
+    // Canvas2D: Multiple readback operations using getImageData are faster with the willReadFrequently attribute set to true. See: https://html.spec.whatwg.org/multipage/canvas.html#concept-canvas-will-read-frequently
+    //
+    // e.g. when getting context
+    // const ctx = canvasEl.getContext("2d", {willReadFrequently: true}) as CanvasRenderingContext2D
+
     return this.#ctx.getImageData(0, 0, this.#width, this.#height)
   }
 }
